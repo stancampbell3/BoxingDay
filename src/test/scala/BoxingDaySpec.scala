@@ -59,6 +59,7 @@ class BoxingDaySpec extends AnyFlatSpec {
   it should "be able to find all the sets of contiguous points" in {
     val str = classOf[BoxingDaySpec].getResourceAsStream("specfile3.txt")
     val grid = BoxingDay.processSpecfile(Source.fromInputStream(str))
+    grid.foreach(e => println(e.mkString(",")))
     val points = BoxingDay.gridToPoints(grid)
     val result = BoxingDay.getAllSetsAdjacentPoints(points)
     result.foreach( e => println(e))
