@@ -88,8 +88,6 @@ object BoxingDay {
       List.empty[List[Point]]
     }
   }
-}
 
-class BoxingDay {
-
+  def findLargestBoundingBox(boxes:List[BoundingBox]):Option[BoundingBox] = ???
 }

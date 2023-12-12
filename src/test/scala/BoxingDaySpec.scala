@@ -82,4 +82,16 @@ class BoxingDaySpec extends AnyFlatSpec {
     assert(!boxes(0).overlapsWith(boxes(1)), "Group 0 should not overlap Group 1")
     assert(!boxes(0).overlapsWith(boxes(2)), "Group 0 should not overlap Group 1")
   }
+
+  it should "be able to find the largest bounding box with no overlaps" in {
+    val str = classOf[BoxingDaySpec].getResourceAsStream("groups.txt")
+    val grid = BoxingDay.processSpecfile(Source.fromInputStream(str))
+    grid.foreach(e => println(e.mkString(",")))
+    val points = BoxingDay.gridToPoints(grid)
+    val groups = BoxingDay.getAllSetsAdjacentPoints(points)
+    val boxes = groups.map( e => BoxingDay.pointsToBoundingBox(e.toSet))
+    val result = BoxingDay.findLargestBoundingBox(boxes)
+    assert(result.isDefined, "No bounding box found which did not overlap")
+    println(result)
+  }
 }
