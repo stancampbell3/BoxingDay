@@ -46,7 +46,7 @@ object BoxingDay {
     val immedAdj = allPoints.filter( _.adjacent(point)).toSet
     val onDeck = (immedAdj.diff(adjacent))
     if(onDeck.size > 0) {
-      immedAdj ++ onDeck.tail.flatMap( e => allAdjacentPoints(e, adjacent ++ immedAdj, allPoints))
+      immedAdj ++ onDeck.flatMap( e => allAdjacentPoints(e, adjacent ++ immedAdj, allPoints))
     } else {
       Set.empty[Point]
     }
