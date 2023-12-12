@@ -116,7 +116,7 @@ object BoxingDay {
     val result = BoxingDay.findLargestBoundingBox(boxes)
     if(result.isDefined) {
       val box = result.get
-      println(s"""(${box.topLeft.x},${box.topLeft.y}),(${box.bottomRight.x},${box.bottomRight.y})""")
+      println(s"""(${box.topLeft.x+1},${box.topLeft.y+1}),(${box.bottomRight.x+1},${box.bottomRight.y+1})""")
       0
     } else {
       -1
