@@ -44,4 +44,24 @@ class BoxingDaySpec extends AnyFlatSpec {
     println(result)
     assert(result.size == 4, "didn't detect all adjacent points")
   }
+
+  it should "be able to find a bounding box around a set of points" in {
+    val str = classOf[BoxingDaySpec].getResourceAsStream("specfile1.txt")
+    val grid = BoxingDay.processSpecfile(Source.fromInputStream(str))
+    val points = BoxingDay.gridToPoints(grid)
+    val adjacents = BoxingDay.allAdjacentPoints(points(0), Set.empty[Point], points)
+    val box = BoxingDay.pointsToBoundingBox(adjacents)
+    println(box)
+    assert(box.topLeft == Point(1,1))
+    assert(box.bottomRight == Point(2,2))
+  }
+
+  it should "be able to find all the sets of contiguous points" in {
+    val str = classOf[BoxingDaySpec].getResourceAsStream("specfile3.txt")
+    val grid = BoxingDay.processSpecfile(Source.fromInputStream(str))
+    val points = BoxingDay.gridToPoints(grid)
+    val result = BoxingDay.getAllSetsAdjacentPoints(points)
+    result.foreach( e => println(e))
+    assert(result.size == 2, "Failed to detect all groups of adjacent points")
+  }
 }

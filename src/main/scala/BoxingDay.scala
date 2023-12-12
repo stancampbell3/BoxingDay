@@ -1,6 +1,6 @@
 import scala.io.Source
 
-case class Point(val x:Int, val y:Int) {
+case class Point(x:Int, y:Int) {
   def adjacent(other:Point):Boolean = {
     // Adjacent without considering diagonals
     (other == this) ||
@@ -9,6 +9,9 @@ case class Point(val x:Int, val y:Int) {
       (other.y == this.y && other.x == this.x - 1 ) ||
       (other.y == this.y && other.x == this.x + 1 )
   }
+}
+
+case class BoundingBox(topLeft:Point, topRight:Point, bottomLeft:Point, bottomRight:Point ) {
 }
 
 object BoxingDay {
@@ -42,7 +45,32 @@ object BoxingDay {
   def allAdjacentPoints(point:Point,adjacent:Set[Point], allPoints:List[Point]):Set[Point] = {
     val immedAdj = allPoints.filter( _.adjacent(point)).toSet
     val onDeck = (immedAdj.diff(adjacent))
-    immedAdj ++ onDeck.tail.flatMap( e => allAdjacentPoints(e, adjacent ++ immedAdj, allPoints))
+    if(onDeck.size > 0) {
+      immedAdj ++ onDeck.tail.flatMap( e => allAdjacentPoints(e, adjacent ++ immedAdj, allPoints))
+    } else {
+      Set.empty[Point]
+    }
+  }
+
+  def pointsToBoundingBox(points:Set[Point]):BoundingBox = {
+    val xs = points.map(_.x)
+    val ys = points.map(_.y)
+    val xmin = xs.min
+    val xmax = xs.max
+    val ymin = ys.min
+    val ymax = ys.max
+
+    BoundingBox(Point(xmin, ymin), Point(xmax,ymin), Point(xmin,ymax), Point(xmax,ymax))
+  }
+
+  def getAllSetsAdjacentPoints(points:List[Point]):List[List[Point]] = {
+    if(points.size > 0) {
+      val adjacent = allAdjacentPoints(points.head, Set.empty[Point], points).toList
+      val other = getAllSetsAdjacentPoints(points.diff(adjacent))
+      List(adjacent) ++ other
+    } else {
+      List.empty[List[Point]]
+    }
   }
 }
 
