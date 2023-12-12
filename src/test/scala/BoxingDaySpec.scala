@@ -10,5 +10,7 @@ class BoxingDaySpec extends AnyFlatSpec {
     assert(grid.size == 4, "Not all lines were processed")
     val width = grid(0).size
     grid.foreach( e => assert(e.size == width, "Not all lines are the same length"))
+
+    BoxingDay.printGrid(grid)
   }
 }
