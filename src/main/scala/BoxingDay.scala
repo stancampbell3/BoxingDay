@@ -101,4 +101,25 @@ object BoxingDay {
       boxes.diff(List(box).filter(_.overlapsWith(box)))
     }).sortBy(_.size).headOption
   }
+
+  // Main
+  def main(args:Array[String]):Int = {
+    // Read standard in as a stream
+    val src = Source.fromInputStream(System.in)
+    // Process the specfile
+    val grid = BoxingDay.processSpecfile(src)
+    // Extract the points
+    val points = BoxingDay.gridToPoints(grid)
+    // Find the largest bounding box, if present
+    val groups = BoxingDay.getAllSetsAdjacentPoints(points)
+    val boxes = groups.map( e => BoxingDay.pointsToBoundingBox(e.toSet))
+    val result = BoxingDay.findLargestBoundingBox(boxes)
+    if(result.isDefined) {
+      val box = result.get
+      println(s"""(${box.topLeft.x},${box.topLeft.y}),(${box.bottomRight.x},${box.bottomRight.y})""")
+      0
+    } else {
+      -1
+    }
+  }
 }
