@@ -65,4 +65,21 @@ class BoxingDaySpec extends AnyFlatSpec {
     result.foreach( e => println(e))
     assert(result.size == 3, "Failed to detect all groups of adjacent points")
   }
+
+  it should "be able to determine if two bounding boxes are overlapping" in {
+    val str = classOf[BoxingDaySpec].getResourceAsStream("groups.txt")
+    val grid = BoxingDay.processSpecfile(Source.fromInputStream(str))
+    grid.foreach(e => println(e.mkString(",")))
+    val points = BoxingDay.gridToPoints(grid)
+    val groups = BoxingDay.getAllSetsAdjacentPoints(points)
+    assert(groups.size == 3, "Failed to detect all groups of adjacent points")
+    val boxes = groups.map( e => BoxingDay.pointsToBoundingBox(e.toSet))
+    assert(boxes.size == 3, "Failed to compute bounding boxes")
+    // group 1 should overlap with group 2 but not group 0
+    assert(boxes(1).overlapsWith(boxes(2)), "Group 1 should overlap Group 2")
+    assert(!boxes(1).overlapsWith(boxes(0)), "Group 1 should not overlap Group 0")
+    // group 0 should not overlap with either
+    assert(!boxes(0).overlapsWith(boxes(1)), "Group 0 should not overlap Group 1")
+    assert(!boxes(0).overlapsWith(boxes(2)), "Group 0 should not overlap Group 1")
+  }
 }
