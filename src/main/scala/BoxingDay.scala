@@ -28,6 +28,12 @@ case class BoundingBox(topLeft:Point, topRight:Point, bottomLeft:Point, bottomRi
       topLeft.y < other.bottomRight.y &&
       bottomRight.y > other.topLeft.y
   }
+
+  def hasAnOverlapWith(boxes:List[BoundingBox]):Boolean = {
+    boxes.collectFirst(e => e.overlapsWith(this)).isDefined
+  }
+
+  def size = (bottomRight.x - topLeft.x) * (bottomRight.y - topLeft.y)
 }
 
 object BoxingDay {
@@ -89,5 +95,8 @@ object BoxingDay {
     }
   }
 
-  def findLargestBoundingBox(boxes:List[BoundingBox]):Option[BoundingBox] = ???
+  def findLargestBoundingBox(boxes:List[BoundingBox]):Option[BoundingBox] = {
+    // find all the non-overlapping boxes
+    boxes.filter(!_.hasAnOverlapWith(boxes.diff(List(this)))).sortBy( e => e.size ).headOption
+  }
 }
