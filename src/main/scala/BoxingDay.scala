@@ -97,6 +97,8 @@ object BoxingDay {
 
   def findLargestBoundingBox(boxes:List[BoundingBox]):Option[BoundingBox] = {
     // find all the non-overlapping boxes
-    boxes.filter(!_.hasAnOverlapWith(boxes.diff(List(this)))).sortBy( e => e.size ).headOption
+    boxes.flatMap( box => {
+      boxes.diff(List(box).filter(_.overlapsWith(box)))
+    }).sortBy(_.size).headOption
   }
 }
