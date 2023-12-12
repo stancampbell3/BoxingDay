@@ -13,4 +13,22 @@ class BoxingDaySpec extends AnyFlatSpec {
 
     BoxingDay.printGrid(grid)
   }
+
+  it should "be able to convert to a List of Points" in {
+
+    val str = classOf[BoxingDaySpec].getResourceAsStream("specfile1.txt")
+    val grid = BoxingDay.processSpecfile(Source.fromInputStream(str))
+    val result = BoxingDay.gridToPoints(grid)
+    assert(result.size == 4, "Incorrect points read")
+
+    result.foreach( p => println(p))
+  }
+
+  it should "be able to detect adjacent points" in {
+    val str = classOf[BoxingDaySpec].getResourceAsStream("specfile1.txt")
+    val grid = BoxingDay.processSpecfile(Source.fromInputStream(str))
+    val result = BoxingDay.gridToPoints(grid)
+
+    // Now, find adjacent points
+  }
 }
