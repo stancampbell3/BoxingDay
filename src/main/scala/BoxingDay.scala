@@ -13,11 +13,20 @@ case class Point(x:Int, y:Int) {
 
 case class BoundingBox(topLeft:Point, topRight:Point, bottomLeft:Point, bottomRight:Point ) {
   def overlapsWith(other:BoundingBox):Boolean = {
-    !(topRight.x <= other.bottomLeft.x ||
-      bottomLeft.x >= other.topRight.x ||
-      topRight.y <= other.bottomLeft.y ||
-      bottomLeft.y >= other.topRight.y
-      )
+    println(this + "\n" + other)
+
+    /**
+     * if (A.x1 < B.x2 &&
+     * A.x2 > B.x1 &&
+     * A.y1 < B.y2 &&
+     * A.y2 > B.y1) {
+     * then A and B intersect
+     * }
+     */
+    topLeft.x <= other.bottomRight.x &&
+      bottomRight.x > other.topLeft.x &&
+      topLeft.y < other.bottomRight.y &&
+      bottomRight.y > other.topLeft.y
   }
 }
 
