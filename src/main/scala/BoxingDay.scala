@@ -29,14 +29,20 @@ object BoxingDay {
   def gridToPoints(grid:Grid):List[Point] = {
 
     val width = grid(0).size
-    (0 until grid.size).map( i => {
-      (0 until width).map( j => {
+    grid.indices.flatMap(i => {
+      (0 until width).map(j => {
         grid(i)(j) match {
-          case '*' => Some(Point(i,j))
+          case '*' => Some(Point(i, j))
           case _ => None
         }
       }).filter(_.isDefined).map(_.get)
-    }).flatten.toList
+    }).toList
+  }
+
+  def allAdjacentPoints(point:Point,adjacent:Set[Point], allPoints:List[Point]):Set[Point] = {
+    val immedAdj = allPoints.filter( _.adjacent(point)).toSet
+    val onDeck = (immedAdj.diff(adjacent))
+    immedAdj ++ onDeck.tail.flatMap( e => allAdjacentPoints(e, adjacent ++ immedAdj, allPoints))
   }
 }
 
