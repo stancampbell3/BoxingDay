@@ -12,7 +12,14 @@ case class Point(x:Int, y:Int) {
 }
 
 case class BoundingBox(topLeft:Point, topRight:Point, bottomLeft:Point, bottomRight:Point ) {
-  def overlapsWith(other:BoundingBox):Boolean = ???
+  def overlapsWith(other:BoundingBox):Boolean = {
+    // if the topleft of either box is inside the other
+    (topLeft.x >= other.topLeft.x && topLeft.y >= other.topLeft.y) ||
+      (other.topLeft.x >= topLeft.x && other.topLeft.y >= other.topLeft.y) ||
+    // if the bottom right of either box is inside the other
+      (bottomRight.x <= other.bottomRight.x && bottomRight.y <= other.bottomRight.y) ||
+      (other.bottomRight.x <= bottomRight.x && other.bottomRight.y >= other.bottomRight.y)
+  }
 }
 
 object BoxingDay {
